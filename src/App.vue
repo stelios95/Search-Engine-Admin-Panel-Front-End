@@ -17,7 +17,7 @@
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
-    <router-view></router-view>
+    <router-view class="mt-4"></router-view>
   </div>
 </template>
 
