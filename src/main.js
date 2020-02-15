@@ -1,8 +1,38 @@
 import Vue from 'vue'
 import App from './App.vue'
+import BootstrapVue from 'bootstrap-vue'
+import VueRouter from 'vue-router';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 
+//components
+
+import GlobalConfigsCmp from './components/GlobalConfigsCmp.vue'
+import AddSeedCmp from './components/AddSeedCmp.vue'
+import RemoveSeedsCmp from './components/RemoveSeedsCmp.vue'
+
+Vue.use(VueRouter);
+Vue.use(BootstrapVue)
 Vue.config.productionTip = false
 
-new Vue({
-  render: h => h(App),
-}).$mount('#app')
+const routes = [
+  {
+      name: 'home',
+      path: '/',
+      component: GlobalConfigsCmp
+  },
+  {
+      name: 'add',
+      path: '/add',
+      component: AddSeedCmp
+  },
+  {
+      name: 'remove',
+      path: '/remove',
+      component: RemoveSeedsCmp
+  }
+];
+
+const router = new VueRouter({ mode: 'history', routes: routes})
+
+new Vue(Vue.util.extend({ router }, App)).$mount('#app');
