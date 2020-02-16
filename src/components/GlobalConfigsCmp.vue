@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <b-container>
     <h3>Global Configuration</h3>
     <hr />
     <p class="lead">Here you can customize the overall behavior of the crawler.</p>
@@ -56,7 +56,7 @@
         </b-form>
       </b-card>
     </div>
-  </div>
+  </b-container>
 </template>
 
 <script>
