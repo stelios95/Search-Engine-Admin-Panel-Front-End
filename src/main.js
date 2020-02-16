@@ -19,6 +19,8 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import GlobalConfigsCmp from "./components/GlobalConfigsCmp.vue";
 import AddSeedCmp from "./components/AddSeedCmp.vue";
 import RemoveSeedsCmp from "./components/RemoveSeedsCmp.vue";
+import VueAxios from "vue-axios";
+import axios from "axios";
 
 // Install VeeValidate rules and localization
 Object.keys(rules).forEach(rule => {
@@ -33,6 +35,8 @@ Vue.component("ValidationProvider", ValidationProvider);
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
+Vue.use(VueAxios, axios);
+
 Vue.config.productionTip = false;
 
 const routes = [

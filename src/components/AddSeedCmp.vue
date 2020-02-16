@@ -110,11 +110,16 @@ export default {
       const seeds = {
         ...this.addSeedConfig,
         children: this.addSeedConfig.children.split("\n").filter(el => {
-          return el
+          return el;
         })
       };
+      let uri = "http://localhost:4000/seeds/add";
+      this.axios.post(uri, seeds).then(() => {
+        this.$router.push({ name: "seeds" });
+      });
       console.log(JSON.stringify(seeds));
       alert("Changes submited!");
+      location.reload();
     },
     onReset(evt) {
       evt.preventDefault();
