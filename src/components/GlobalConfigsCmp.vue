@@ -14,14 +14,13 @@
                 label-for="input-1"
                 description="Set the maximum hours the crawler can run."
               >
-                <b-form-input
+                <b-form-select
                   id="input-1"
                   v-model="globalConfig.timeout"
-                  type="number"
-                  placeholder="Timeout"
+                  :options="timeOutOptions"
                   :state="getValidationState(validationContext)"
                   aria-describedby="input-1-live-feedback"
-                ></b-form-input>
+                ></b-form-select>
                 <b-form-invalid-feedback
                   id="input-1-live-feedback"
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
@@ -35,14 +34,13 @@
                 label-for="input-2"
                 description="Set the hourly interval to update database content."
               >
-                <b-form-input
+                <b-form-select
                   id="input-2"
                   v-model="globalConfig.updateFreq"
-                  type="number"
-                  placeholder="Update Frequency"
+                  :options="updateFreqOptions"
                   :state="getValidationState(validationContext)"
                   aria-describedby="input-2-live-feedback"
-                ></b-form-input>
+                ></b-form-select>
                 <b-form-invalid-feedback
                   id="input-2-live-feedback"
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
@@ -60,14 +58,13 @@
                 label-for="input-2"
                 description="Set the hourly interval to run the crawler."
               >
-                <b-form-input
+                <b-form-select
                   id="input-3"
                   v-model="globalConfig.crawlFreq"
-                  type="number"
-                  placeholder="Crawler Run Frequency"
+                  :options="crawlFreqOptions"
                   :state="getValidationState(validationContext)"
                   aria-describedby="input-3-live-feedback"
-                ></b-form-input>
+                ></b-form-select>
                 <b-form-invalid-feedback
                   id="input-3-live-feedback"
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
@@ -92,15 +89,30 @@ export default {
         updateFreq: 12,
         crawlFreq: 24
       },
-      show: true
+      show: true,
+      timeOutOptions: [
+        { value: 1, text: "After 1 hour" },
+        { value: 2, text: "After 2 hours" },
+        { value: 3, text: "After 3 hours" }
+      ],
+      updateFreqOptions: [
+        { value: 3, text: "Every 3 hours" },
+        { value: 6, text: "Every 6 hours" },
+        { value: 9, text: "Every 9 hours" },
+        { value: 12, text: "Every 12 hours" }
+      ],
+      crawlFreqOptions: [
+        { value: 6, text: "Every 6 hours" },
+        { value: 12, text: "Every 12 hours" },
+        { value: 24, text: "Every 24 hours" }
+      ]
     };
   },
   methods: {
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
     },
-    onSubmit(evt) {
-      evt.preventDefault();
+    onSubmit() {
       console.log(JSON.stringify(this.globalConfig));
       alert("Changes submited!");
     },

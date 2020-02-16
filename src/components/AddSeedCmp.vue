@@ -55,25 +55,20 @@
               </b-form-group>
             </validation-provider>
 
-            <validation-provider
-              name="Depth"
-              rules="required: true|between: 1,4"
-              v-slot="validationContext"
-            >
+            <validation-provider name="Depth" rules="required" v-slot="validationContext">
               <b-form-group
                 id="input-group-3"
                 label="Crawling Depth"
                 label-for="input-2"
                 description="Set the crawling depth level of this page."
               >
-                <b-form-input
+                <b-form-select
                   id="input-3"
                   v-model="addSeedConfig.depth"
-                  type="number"
-                  placeholder="Select depth"
+                  :options="options"
                   :state="getValidationState(validationContext)"
                   aria-describedby="input-3-live-feedback"
-                ></b-form-input>
+                ></b-form-select>
                 <b-form-invalid-feedback
                   id="input-3-live-feedback"
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
@@ -98,7 +93,13 @@ export default {
         children: "",
         depth: 3
       },
-      show: true
+      show: true,
+      options: [
+        { value: 1, text: "1 level" },
+        { value: 2, text: "2 levels" },
+        { value: 3, text: "3 levels" },
+        { value: 4, text: "4 levels" }
+      ]
     };
   },
   methods: {
@@ -108,7 +109,9 @@ export default {
     onSubmit() {
       const seeds = {
         ...this.addSeedConfig,
-        children: this.addSeedConfig.children.split("\n")
+        children: this.addSeedConfig.children.split("\n").filter(el => {
+          return el
+        })
       };
       console.log(JSON.stringify(seeds));
       alert("Changes submited!");
