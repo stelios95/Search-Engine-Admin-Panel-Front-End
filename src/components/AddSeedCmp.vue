@@ -1,61 +1,89 @@
 <template>
   <b-container>
     <h3>Add Seed</h3>
-    <hr>
+    <hr />
     <p class="lead">Here you can add a new page as a seed for the crawler.</p>
     <div>
-      <b-card title="Set new Seed Page Parameters" fluid style="max-width: 60rem;" class="mb-2">
-        <b-form @submit="onSubmit" @reset="onReset" v-if="show">
-          <b-form-group
-            id="input-group-1"
-            label="Crawling Timeout"
-            label-for="input-1"
-            description="Set the root page."
-          >
-            <b-form-input
-              id="input-1"
-              v-model="addSeedConfig.page"
-              type="text"
-              required
-              placeholder="Root page URL"
-            ></b-form-input>
-          </b-form-group>
+      <b-card title="Set new Seed Page Parameters" style="max-width: 60rem;" class="mb-2">
+        <validation-observer ref="observer" v-slot="{ passes }">
+          <b-form @submit.stop.prevent="passes(onSubmit)" @reset="onReset" v-if="show">
+            <validation-provider name="Page" :rules="{ required: true }" v-slot="validationContext">
+              <b-form-group
+                id="input-group-1"
+                label="Crawling Timeout"
+                label-for="input-1"
+                description="Set the root page."
+              >
+                <b-form-input
+                  id="input-1"
+                  v-model="addSeedConfig.page"
+                  type="text"
+                  placeholder="Root page URL"
+                  :state="getValidationState(validationContext)"
+                  aria-describedby="input-1-live-feedback"
+                ></b-form-input>
+                <b-form-invalid-feedback
+                  id="input-1-live-feedback"
+                >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
-          <b-form-group
-            id="input-group-2"
-            label="Singificant Children URLs"
-            label-for="input-2"
-            description="Set the children URLs that need their content to be updated on each line."
-          >
-            <b-form-textarea
-              lazy
-              id="input-2"
-              placeholder="Here you can add the significant children..."
-              rows="3"
-              max-rows="6"
-              v-model="addSeedConfig.children"
-              required
-            ></b-form-textarea>
-          </b-form-group>
+            <validation-provider
+              name="Children"
+              :rules="{ required: true }"
+              v-slot="validationContext"
+            >
+              <b-form-group
+                id="input-group-2"
+                label="Singificant Children URLs"
+                label-for="input-2"
+                description="Set the children URLs that need their content to be updated on each line."
+              >
+                <b-form-textarea
+                  lazy
+                  id="input-2"
+                  placeholder="Here you can add the significant children..."
+                  rows="3"
+                  max-rows="6"
+                  v-model="addSeedConfig.children"
+                  :state="getValidationState(validationContext)"
+                  aria-describedby="input-2-live-feedback"
+                ></b-form-textarea>
+                <b-form-invalid-feedback
+                  id="input-2-live-feedback"
+                >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
-          <b-form-group
-            id="input-group-3"
-            label="Crawling Depth"
-            label-for="input-2"
-            description="Set the crawling depth level of this page."
-          >
-            <b-form-input
-              id="input-3"
-              v-model="addSeedConfig.depth"
-              type="number"
-              required
-              placeholder="Select depth"
-            ></b-form-input>
-          </b-form-group>
+            <validation-provider
+              name="Depth"
+              rules="required: true|between: 1,4"
+              v-slot="validationContext"
+            >
+              <b-form-group
+                id="input-group-3"
+                label="Crawling Depth"
+                label-for="input-2"
+                description="Set the crawling depth level of this page."
+              >
+                <b-form-input
+                  id="input-3"
+                  v-model="addSeedConfig.depth"
+                  type="number"
+                  placeholder="Select depth"
+                  :state="getValidationState(validationContext)"
+                  aria-describedby="input-3-live-feedback"
+                ></b-form-input>
+                <b-form-invalid-feedback
+                  id="input-3-live-feedback"
+                >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
+              </b-form-group>
+            </validation-provider>
 
-          <b-button class="mr-2" type="submit" variant="success">Submit</b-button>
-          <b-button type="reset">Defaults</b-button>
-        </b-form>
+            <b-button class="mr-2" type="submit" variant="success">Submit</b-button>
+            <b-button type="reset">Defaults</b-button>
+          </b-form>
+        </validation-observer>
       </b-card>
     </div>
   </b-container>
@@ -63,42 +91,43 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       addSeedConfig: {
-        page: '',
-        children: '',
+        page: "",
+        children: "",
         depth: 3
       },
       show: true
-    }
+    };
   },
-    methods: {
-    onSubmit(evt) {
-      evt.preventDefault()
+  methods: {
+    getValidationState({ dirty, validated, valid = null }) {
+      return dirty || validated ? valid : null;
+    },
+    onSubmit() {
       const seeds = {
         ...this.addSeedConfig,
-        children: this.addSeedConfig.children.split('\n')
-      }
-      console.log(JSON.stringify(seeds))
-      alert("Changes submited!")
+        children: this.addSeedConfig.children.split("\n")
+      };
+      console.log(JSON.stringify(seeds));
+      alert("Changes submited!");
     },
     onReset(evt) {
       evt.preventDefault();
-      this.addSeedConfig.page = ''
-      this.addSeedConfig.children = ''
-      this.addSeedConfig.depth = 3
-      console.log(JSON.stringify(this.addSeedConfig))
+      this.addSeedConfig.page = "";
+      this.addSeedConfig.children = "";
+      this.addSeedConfig.depth = 3;
+      console.log(JSON.stringify(this.addSeedConfig));
       // Trick to reset/clear native browser form validation state
-      this.show = false
+      this.show = false;
       this.$nextTick(() => {
-        this.show = true
+        this.show = true;
       });
     }
   }
-}
+};
 </script>
 
 <style>
-
 </style>
