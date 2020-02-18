@@ -4,8 +4,6 @@ const seedRoutes = express.Router();
 let Seed = require('./seedSchema');
 
 seedRoutes.route('/add').post(function (req, res) {
-    console.log(req.body)
-    
     let seed = new Seed({
         parentUrl: req.body.page,
         childrenUrls: req.body.children.map(el => {
@@ -17,10 +15,12 @@ seedRoutes.route('/add').post(function (req, res) {
     });
     seed.save()
       .then(() => {
+        console.log('saved!')
         res.status(200).send("saved!")
       })
-      .catch(() => {
-        res.status(400).send("unable to save to database");
+      .catch((error) => {
+        console.log(error)
+        res.status(400).send(error);
       });
   });
 

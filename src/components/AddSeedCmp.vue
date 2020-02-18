@@ -74,9 +74,15 @@
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
-            <div v-if="showSpinner" class="d-flex align-items-center">
-              <p v-bind="loadingMessage" class="lead">{{ loadingMessage }}</p>
-              <b-spinner variant="primary" class="ml-auto"></b-spinner>
+            <div class="d-flex align-items-center">
+              <p
+                v-if="showMessage"
+                v-bind="loadingMessage"
+                v-bind:class="{'text-success': isSuccess, 
+                                'text-danger': !isSuccess
+                                }"
+              >{{ loadingMessage }}</p>
+              <b-spinner v-if="showSpinner" variant="primary" class="ml-auto"></b-spinner>
             </div>
             <b-button
               class="mr-2"
@@ -106,6 +112,7 @@ export default {
       },
       show: true,
       showSpinner: false,
+      showMessage: false,
       options: [
         { value: 1, text: "1 level" },
         { value: 2, text: "2 levels" },
@@ -113,7 +120,8 @@ export default {
         { value: 4, text: "4 levels" }
       ],
       loadingMessage: "Sending data to server...",
-      isDisabled: false
+      isDisabled: false,
+      isSuccess: false
     };
   },
 
@@ -150,21 +158,28 @@ export default {
       };
       let uri = "http://localhost:5000/seeds/add";
       this.showSpinner = true;
+      this.isSuccess = true;
+      this.showMessage = true;
       this.isDisabled = true;
       this.axios
         .post(uri, seeds)
         .then(response => {
-          console.log("Response: " + JSON.stringify(response));
+          if (response.status === 200) {
+            this.showSpinner = false;
+            this.loadingMessage = "Seed settings saved!";
+            this.isDisabled = false;
+            console.log("Response: " + JSON.stringify(response));
+          }
           console.log(JSON.stringify(seeds));
-          this.showSpinner = false;
-          this.message = "Seed settings saved!";
-          this.disabled = false;
           alert("Changes submited!");
-          location.reload();
+          setTimeout(() => {
+            location.reload();
+          }, 800);
         })
         .catch(err => {
           this.showSpinner = false;
-          this.message = "An Error occured: " + err;
+          this.isSuccess = false;
+          this.loadingMessage = "An Error occured: " + err;
           this.isDisabled = false;
           console.log(err);
         });
@@ -174,6 +189,8 @@ export default {
       this.addSeedConfig.page = "";
       this.addSeedConfig.children = "";
       this.addSeedConfig.depth = 3;
+      this.showMessage = false;
+      this.showSpinner = false;
       console.log(JSON.stringify(this.addSeedConfig));
       // Trick to reset/clear native browser form validation state
       this.show = false;
@@ -189,14 +206,14 @@ export default {
       }
       return "You must give a valid URL!";
     }),
-    extend("urlTextArea", value => {
-      console.log('value: '+ value)
-      const arr = this.extractURLs(value)
-      if (arr.length) {
-        return true;
-      }
-      return "You must give at least one valid child URL!";
-    })
+      extend("urlTextArea", value => {
+        console.log("value: " + value);
+        const arr = this.extractURLs(value);
+        if (arr.length) {
+          return true;
+        }
+        return "You must give at least one valid child URL!";
+      });
   }
 };
 </script>
