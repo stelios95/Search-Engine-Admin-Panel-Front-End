@@ -74,9 +74,17 @@
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
-
-            <b-button class="mr-2" type="submit" variant="success">Submit</b-button>
-            <b-button type="reset">Defaults</b-button>
+            <div v-if="showSpinner" class="d-flex align-items-center">
+              <p v-bind="loadingMessage" class="lead">{{ loadingMessage }}</p>
+              <b-spinner variant="primary" class="ml-auto"></b-spinner>
+            </div>
+            <b-button
+              class="mr-2"
+              type="submit"
+              variant="success"
+              v-bind:disabled="isDisabled"
+            >Submit</b-button>
+            <b-button class="mr-2" type="reset" v-bind:disabled="isDisabled">Defaults</b-button>
           </b-form>
         </validation-observer>
       </b-card>
@@ -97,12 +105,15 @@ export default {
         depth: 3
       },
       show: true,
+      showSpinner: false,
       options: [
         { value: 1, text: "1 level" },
         { value: 2, text: "2 levels" },
         { value: 3, text: "3 levels" },
         { value: 4, text: "4 levels" }
-      ]
+      ],
+      loadingMessage: "Sending data to server...",
+      isDisabled: false
     };
   },
 
@@ -132,18 +143,31 @@ export default {
       console.log("Set: " + JSON.stringify(set));
       return set;
     },
-    onSubmitHandler() {
+    onSubmit() {
       const seeds = {
         ...this.addSeedConfig,
         children: this.extractURLs(this.addSeedConfig.children)
       };
-      let uri = "http://localhost:4000/seeds/add";
-      this.axios.post(uri, seeds).then(() => {
-        this.$router.push({ name: "seeds" });
-      });
-      console.log(JSON.stringify(seeds));
-      alert("Changes submited!");
-      location.reload();
+      let uri = "http://localhost:5000/seeds/add";
+      this.showSpinner = true;
+      this.isDisabled = true;
+      this.axios
+        .post(uri, seeds)
+        .then(response => {
+          console.log("Response: " + JSON.stringify(response));
+          console.log(JSON.stringify(seeds));
+          this.showSpinner = false;
+          this.message = "Seed settings saved!";
+          this.disabled = false;
+          alert("Changes submited!");
+          location.reload();
+        })
+        .catch(err => {
+          this.showSpinner = false;
+          this.message = "An Error occured: " + err;
+          this.isDisabled = false;
+          console.log(err);
+        });
     },
     onReset(evt) {
       evt.preventDefault();
