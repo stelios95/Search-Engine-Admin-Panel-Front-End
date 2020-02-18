@@ -7,10 +7,10 @@
       <b-card title="Set new Seed Page Parameters" style="max-width: 60rem;" class="mb-2">
         <validation-observer ref="observer" v-slot="{ passes }">
           <b-form @submit.stop.prevent="passes(onSubmit)" @reset="onReset" v-if="show">
-            <validation-provider name="Page" :rules="{ required: true }" v-slot="validationContext">
+            <validation-provider name="Page" rules="required|url" v-slot="validationContext">
               <b-form-group
                 id="input-group-1"
-                label="Crawling Timeout"
+                label="Root Page"
                 label-for="input-1"
                 description="Set the root page."
               >
@@ -85,9 +85,12 @@
 </template>
 
 <script>
+import { extend } from "vee-validate";
+
 export default {
   data() {
     return {
+      extend: extend,
       addSeedConfig: {
         page: "",
         children: "",
@@ -102,16 +105,37 @@ export default {
       ]
     };
   },
+
   methods: {
+    isValidUrl(v) {
+      var pattern = new RegExp(
+        "^(https?:\\/\\/)?" + // protocol
+        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+        "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+        "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+          "(\\#[-a-z\\d_]*)?$",
+        "i"
+      ); // fragment locator
+      return !!pattern.test(v);
+    },
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
     },
-    onSubmit() {
+    extractURLs(str) {
+      const arr = str.split("\n").filter(el => {
+        //get only the valid urls on each line
+        return this.isValidUrl(el);
+      });
+      const set = [...new Set(arr)];
+      console.log("Array: " + JSON.stringify(arr));
+      console.log("Set: " + JSON.stringify(set));
+      return set;
+    },
+    onSubmitHandler() {
       const seeds = {
         ...this.addSeedConfig,
-        children: this.addSeedConfig.children.split("\n").filter(el => {
-          return el;
-        })
+        children: this.extractURLs(this.addSeedConfig.children)
       };
       let uri = "http://localhost:4000/seeds/add";
       this.axios.post(uri, seeds).then(() => {
@@ -133,6 +157,14 @@ export default {
         this.show = true;
       });
     }
+  },
+  mounted() {
+    this.extend("url", value => {
+      if (this.isValidUrl(value)) {
+        return true;
+      }
+      return "You must give a valid URL!";
+    });
   }
 };
 </script>
