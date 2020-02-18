@@ -30,7 +30,7 @@
 
             <validation-provider
               name="Children"
-              :rules="{ required: true }"
+              rules="required|urlTextArea"
               v-slot="validationContext"
             >
               <b-form-group
@@ -183,12 +183,20 @@ export default {
     }
   },
   mounted() {
-    this.extend("url", value => {
+    extend("url", value => {
       if (this.isValidUrl(value)) {
         return true;
       }
       return "You must give a valid URL!";
-    });
+    }),
+    extend("urlTextArea", value => {
+      console.log('value: '+ value)
+      const arr = this.extractURLs(value)
+      if (arr.length) {
+        return true;
+      }
+      return "You must give at least one valid child URL!";
+    })
   }
 };
 </script>
