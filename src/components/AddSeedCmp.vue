@@ -74,15 +74,16 @@
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
-            <div class="d-flex align-items-center">
+            <div class="d-flex flex-row">
+              <p class="mr-2" v-if="showLoadingMessage">Sending data to server...</p>
               <p
                 v-if="showMessage"
-                v-bind="loadingMessage"
+                v-bind="resultMessage"
                 v-bind:class="{'text-success': isSuccess, 
                                 'text-danger': !isSuccess
                                 }"
-              >{{ loadingMessage }}</p>
-              <b-spinner v-if="showSpinner" variant="primary" class="ml-auto"></b-spinner>
+              >{{ resultMessage }}</p>
+              <b-spinner class= "spinner-border-sm mt-1" v-if="showSpinner" variant="primary"></b-spinner>
             </div>
             <b-button
               class="mr-2"
@@ -90,7 +91,7 @@
               variant="success"
               v-bind:disabled="isDisabled"
             >Submit</b-button>
-            <b-button class="mr-2" type="reset" v-bind:disabled="isDisabled">Defaults</b-button>
+            <b-button  type="reset" v-bind:disabled="isDisabled">Defaults</b-button>
           </b-form>
         </validation-observer>
       </b-card>
@@ -119,7 +120,8 @@ export default {
         { value: 3, text: "3 levels" },
         { value: 4, text: "4 levels" }
       ],
-      loadingMessage: "Sending data to server...",
+      showLoadingMessage: false,
+      resultMessage: "",
       isDisabled: false,
       isSuccess: false
     };
@@ -152,21 +154,24 @@ export default {
       return set;
     },
     onSubmit() {
+      this.showLoadingMessage = true
       const seeds = {
         ...this.addSeedConfig,
         children: this.extractURLs(this.addSeedConfig.children)
       };
       let uri = "http://localhost:5000/seeds/add";
       this.showSpinner = true;
-      this.isSuccess = true;
-      this.showMessage = true;
+      this.showMessage = false;
       this.isDisabled = true;
       this.axios
         .post(uri, seeds)
         .then(response => {
           if (response.status === 200) {
+            this.resultMessage = "Seed settings saved!";
+            this.showLoadingMessage = false
+            this.showMessage = true;
             this.showSpinner = false;
-            this.loadingMessage = "Seed settings saved!";
+            
             this.isDisabled = false;
             console.log("Response: " + JSON.stringify(response));
           }
@@ -177,9 +182,11 @@ export default {
           }, 800);
         })
         .catch(err => {
+          this.showLoadingMessage = false
           this.showSpinner = false;
           this.isSuccess = false;
-          this.loadingMessage = "An Error occured: " + err.message.replace("Error:", "");
+          this.resultMessage = "An Error occured: " + err.message.replace("Error:", "");
+          this.showMessage = true;
           this.isDisabled = false;
           console.log(err);
         });
