@@ -83,7 +83,7 @@
                                 'text-danger': !isSuccess
                                 }"
               >{{ resultMessage }}</p>
-              <b-spinner class= "spinner-border-sm mt-1" v-if="showSpinner" variant="primary"></b-spinner>
+              <b-spinner class="spinner-border-sm mt-1" v-if="showSpinner" variant="primary"></b-spinner>
             </div>
             <b-button
               class="mr-2"
@@ -91,7 +91,7 @@
               variant="success"
               v-bind:disabled="isDisabled"
             >Submit</b-button>
-            <b-button  type="reset" v-bind:disabled="isDisabled">Defaults</b-button>
+            <b-button type="reset" v-bind:disabled="isDisabled">Defaults</b-button>
           </b-form>
         </validation-observer>
       </b-card>
@@ -154,7 +154,7 @@ export default {
       return set;
     },
     onSubmit() {
-      this.showLoadingMessage = true
+      this.showLoadingMessage = true;
       const seeds = {
         ...this.addSeedConfig,
         children: this.extractURLs(this.addSeedConfig.children)
@@ -168,10 +168,10 @@ export default {
         .then(response => {
           if (response.status === 200) {
             this.resultMessage = "Seed settings saved!";
-            this.showLoadingMessage = false
+            this.showLoadingMessage = false;
             this.showMessage = true;
             this.showSpinner = false;
-            
+
             this.isDisabled = false;
             console.log("Response: " + JSON.stringify(response));
           }
@@ -182,10 +182,11 @@ export default {
           }, 800);
         })
         .catch(err => {
-          this.showLoadingMessage = false
+          this.showLoadingMessage = false;
           this.showSpinner = false;
           this.isSuccess = false;
-          this.resultMessage = "An Error occured: " + err.message.replace("Error:", "");
+          this.resultMessage =
+            "An Error occured: " + err.message.replace("Error:", "");
           this.showMessage = true;
           this.isDisabled = false;
           console.log(err);

@@ -10,9 +10,12 @@
     >
       <b-table
         id="my-table"
+        ref="selectableTable"
         selectable
-        hover
+        select-mode="multi"
         :items="items"
+        @row-selected="onRowSelected"
+        responsive="sm"
         :per-page="perPage"
         :current-page="currentPage"
       ></b-table>
@@ -25,6 +28,7 @@
             name="checkbox-1"
             value="allSelected"
             unchecked-value="noneSelected"
+            @change="selectRowsHandle"
           >Select All</b-form-checkbox>
         </b-col>
         <b-col>
@@ -37,12 +41,7 @@
           ></b-pagination>
         </b-col>
         <b-col>
-          <b-button
-            class="float-right"
-            type="submit"
-            variant="success"
-            v-bind:disabled="isDisabled"
-          >Remove Selected</b-button>
+          <b-button class="float-right" type="submit" variant="success">Remove Selected</b-button>
         </b-col>
       </b-row>
     </b-card>
@@ -53,9 +52,10 @@
 export default {
   data() {
     return {
-      status: "",
+      status: "noneSelected",
       perPage: 6,
       currentPage: 1,
+      selected: [],
       items: [
         { parentUrl: "https://bootstrap-vue.js.org/1" },
         { parentUrl: "https://bootstrap-vue.js.org/2" },
@@ -79,6 +79,22 @@ export default {
   computed: {
     rows() {
       return this.items.length;
+    }
+  },
+  methods: {
+    selectRowsHandle(evt) {
+      console.log(JSON.stringify(evt));
+      evt === "allSelected" ? this.selectAllRows() : this.clearSelected();
+    },
+    onRowSelected(items) {
+      this.selected = items;
+      console.log(JSON.stringify(this.selected));
+    },
+    selectAllRows() {
+      this.$refs.selectableTable.selectAllRows();
+    },
+    clearSelected() {
+      this.$refs.selectableTable.clearSelected();
     }
   }
 };
