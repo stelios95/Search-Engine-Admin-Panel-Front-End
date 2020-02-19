@@ -179,7 +179,7 @@ export default {
         .catch(err => {
           this.showSpinner = false;
           this.isSuccess = false;
-          this.loadingMessage = "An Error occured: " + err;
+          this.loadingMessage = "An Error occured: " + err.message.replace("Error:", "");
           this.isDisabled = false;
           console.log(err);
         });
