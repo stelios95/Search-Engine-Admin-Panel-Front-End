@@ -8,7 +8,9 @@
       style="max-width: 60rem;"
       class="mb-2"
     >
+      <b-spinner v-if="showSpinner"></b-spinner>
       <b-table
+        v-else
         id="my-table"
         ref="selectableTable"
         selectable
@@ -41,7 +43,7 @@
           ></b-pagination>
         </b-col>
         <b-col>
-          <b-button class="float-right" type="submit" variant="success">Remove Selected</b-button>
+          <b-button class="float-right" v-on:click="removeSelected" variant="success">Remove Selected</b-button>
         </b-col>
       </b-row>
     </b-card>
@@ -56,25 +58,12 @@ export default {
       perPage: 6,
       currentPage: 1,
       selected: [],
-      items: [
-        { parentUrl: "https://bootstrap-vue.js.org/1" },
-        { parentUrl: "https://bootstrap-vue.js.org/2" },
-        { parentUrl: "https://bootstrap-vue.js.org/3" },
-        { parentUrl: "https://bootstrap-vue.js.org/4" },
-        { parentUrl: "https://bootstrap-vue.js.org/5" },
-        { parentUrl: "https://bootstrap-vue.js.org/6" },
-        { parentUrl: "https://bootstrap-vue.js.org/7" },
-        { parentUrl: "https://bootstrap-vue.js.org/8" },
-        { parentUrl: "https://bootstrap-vue.js.org/9" },
-        { parentUrl: "https://bootstrap-vue.js.org/10" },
-        { parentUrl: "https://bootstrap-vue.js.org/11" },
-        { parentUrl: "https://bootstrap-vue.js.org/12" },
-        { parentUrl: "https://bootstrap-vue.js.org/13" },
-        { parentUrl: "https://bootstrap-vue.js.org/14" },
-        { parentUrl: "https://bootstrap-vue.js.org/15" },
-        { parentUrl: "https://bootstrap-vue.js.org/16" }
-      ]
+      items: [],
+      showSpinner: true
     };
+  },
+  mounted() {
+    this.fetchAll();
   },
   computed: {
     rows() {
@@ -82,6 +71,18 @@ export default {
     }
   },
   methods: {
+    fetchAll() {
+      let uri = "http://localhost:5000/seeds/fetchAll";
+      this.axios
+        .get(uri)
+        .then(res => {
+          this.items = res.data
+          this.showSpinner = false
+        })
+        .catch(err => {
+          console.log(err.message);
+        });
+    },
     selectRowsHandle(evt) {
       console.log(JSON.stringify(evt));
       evt === "allSelected" ? this.selectAllRows() : this.clearSelected();
@@ -95,6 +96,21 @@ export default {
     },
     clearSelected() {
       this.$refs.selectableTable.clearSelected();
+    },
+    removeSelected() {
+      let uri = "http://localhost:5000/seeds/removeSeeds";
+      let ids = new Array()
+      this.selected.forEach(el => {
+        ids.push(el._id)
+      })
+      this.axios.post(uri, ids).then(result => {
+        console.log(result)
+        setTimeout(() => {
+            location.reload();
+          }, 800);
+      }).catch(err => {
+        console.log(err)
+      })
     }
   }
 };

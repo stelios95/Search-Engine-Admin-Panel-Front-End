@@ -82,7 +82,7 @@
                 v-bind:class="{'text-success': isSuccess, 
                                 'text-danger': !isSuccess
                                 }"
-              >{{ resultMessage }}</p>
+              ><b>{{ resultMessage }}</b></p>
               <b-spinner class="spinner-border-sm mt-1" v-if="showSpinner" variant="primary"></b-spinner>
             </div>
             <b-button
@@ -171,12 +171,12 @@ export default {
             this.showLoadingMessage = false;
             this.showMessage = true;
             this.showSpinner = false;
-
+            this.isSuccess = true;
             this.isDisabled = false;
             console.log("Response: " + JSON.stringify(response));
           }
           console.log(JSON.stringify(seeds));
-          alert("Changes submited!");
+          //alert("Changes submited!");
           setTimeout(() => {
             location.reload();
           }, 800);

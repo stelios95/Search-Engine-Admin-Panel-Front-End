@@ -24,5 +24,22 @@ seedRoutes.route('/add').post(function (req, res) {
       });
   });
 
+seedRoutes.route('/fetchAll').get((req, res) => {
+  Seed.find({} , '_id parentUrl').then(seeds => {
+    res.status(200).send(seeds)
+  }).catch(err => {
+    res.status(400).send(err)
+  })
+}) 
+
+seedRoutes.route('/removeSeeds').post((req, res) => {
+  console.log('body: ' + JSON.stringify(req.body))
+  Seed.deleteMany({ _id: req.body}).then(result => {
+    res.status(200).send(result)
+  }).catch(err => {
+    res.status(400).send(err)
+  })
+})
+
   
 module.exports = seedRoutes;
