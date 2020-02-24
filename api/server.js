@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const PORT = 5000
 const cors = require('cors')
-const SeedDocument = require('./seedSchema')
 const getPwd = require('./databasePasswordFetch')
 const seedRoute = require('./routes');
 
@@ -21,7 +20,7 @@ const mongoURL = 'mongodb+srv://admin:' +
 //connect to MongoDBo on Atlas
 mongoose
     .connect(mongoURL, { useNewUrlParser: true })
-    .then((result) => {
+    .then(() => {
         //connected
         console.log('Connected to Atlas DB for seeds')           
     })

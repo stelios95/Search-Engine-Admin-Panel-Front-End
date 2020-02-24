@@ -3,7 +3,7 @@ const seedRoutes = express.Router();
 
 let Seed = require('./seedSchema');
 
-seedRoutes.route('/add').post(function (req, res) {
+seedRoutes.route('/add').post( (req, res) => {
     let seed = new Seed({
         parentUrl: req.body.page,
         childrenUrls: req.body.children.map(el => {

@@ -9,11 +9,11 @@
           <b-link to="/add" router-tag="b-nav-item">Add Seed</b-link>
           <b-link to="/remove" router-tag="b-nav-item">Remove Seeds</b-link>
         </b-navbar-nav>
-        <!-- Right aligned nav items --> 
+        <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
             <b-button size="sm" class="my-2 my-sm-0" type="submit">Log out</b-button>
-          </b-nav-form>         
+          </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -22,13 +22,8 @@
 </template>
 
 <script>
-
-export default {
-
-}
+export default {};
 </script>
 
 <style>
-
-
 </style>

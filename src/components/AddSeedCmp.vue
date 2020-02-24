@@ -82,7 +82,9 @@
                 v-bind:class="{'text-success': isSuccess, 
                                 'text-danger': !isSuccess
                                 }"
-              ><b>{{ resultMessage }}</b></p>
+              >
+                <b>{{ resultMessage }}</b>
+              </p>
               <b-spinner class="spinner-border-sm mt-1" v-if="showSpinner" variant="primary"></b-spinner>
             </div>
             <b-button

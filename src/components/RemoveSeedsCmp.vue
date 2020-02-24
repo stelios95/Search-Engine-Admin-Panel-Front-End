@@ -8,7 +8,9 @@
       style="max-width: 60rem;"
       class="mb-2"
     >
-      <b-spinner v-if="showSpinner"></b-spinner>
+      <div v-if="showSpinner" class="text-center">
+        <b-spinner variant="primary"></b-spinner>
+      </div>
       <b-table
         v-else
         id="my-table"
@@ -43,7 +45,12 @@
           ></b-pagination>
         </b-col>
         <b-col>
-          <b-button class="float-right" v-on:click="removeSelected" variant="success">Remove Selected</b-button>
+          <b-button
+            class="float-right"
+            v-on:click="removeSelected"
+            variant="success"
+            v-bind:disabled="isDisabled"
+          >Remove Selected</b-button>
         </b-col>
       </b-row>
     </b-card>
@@ -59,7 +66,8 @@ export default {
       currentPage: 1,
       selected: [],
       items: [],
-      showSpinner: true
+      showSpinner: true,
+      isDisabled: false
     };
   },
   mounted() {
@@ -72,12 +80,14 @@ export default {
   },
   methods: {
     fetchAll() {
+      this.isDisabled = true
       let uri = "http://localhost:5000/seeds/fetchAll";
       this.axios
         .get(uri)
         .then(res => {
-          this.items = res.data
-          this.showSpinner = false
+          this.items = res.data;
+          this.showSpinner = false;
+          this.isDisabled = false
         })
         .catch(err => {
           console.log(err.message);
@@ -98,19 +108,23 @@ export default {
       this.$refs.selectableTable.clearSelected();
     },
     removeSelected() {
+      this.isDisabled = true
       let uri = "http://localhost:5000/seeds/removeSeeds";
-      let ids = new Array()
+      let ids = new Array();
       this.selected.forEach(el => {
-        ids.push(el._id)
-      })
-      this.axios.post(uri, ids).then(result => {
-        console.log(result)
-        setTimeout(() => {
+        ids.push(el._id);
+      });
+      this.axios
+        .post(uri, ids)
+        .then(result => {
+          console.log(result);
+          setTimeout(() => {
             location.reload();
           }, 800);
-      }).catch(err => {
-        console.log(err)
-      })
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
