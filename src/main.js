@@ -19,6 +19,7 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import GlobalConfigsCmp from "./components/GlobalConfigsCmp.vue";
 import AddSeedCmp from "./components/AddSeedCmp.vue";
 import RemoveSeedsCmp from "./components/RemoveSeedsCmp.vue";
+import LoginCmp from "./components/LoginCmp.vue"
 import VueAxios from "vue-axios";
 import axios from "axios";
 
@@ -41,8 +42,14 @@ Vue.config.productionTip = false;
 
 const routes = [
   {
-    name: "home",
-    path: "/",
+    path: '/', 
+    redirect: {
+      name: 'login'
+    }
+  },
+  {
+    name: "global",
+    path: "/global",
     component: GlobalConfigsCmp
   },
   {
@@ -54,6 +61,11 @@ const routes = [
     name: "remove",
     path: "/remove",
     component: RemoveSeedsCmp
+  },
+  {
+    name: 'login',
+    path: '/login',
+    component: LoginCmp
   }
 ];
 
