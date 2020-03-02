@@ -4,14 +4,12 @@ const seedRoutes = express.Router();
 let Seed = require('./seedSchema');
 
 seedRoutes.route('/add').post( (req, res) => {
+  console.log(req.body)
     let seed = new Seed({
-        parentUrl: req.body.page,
-        childrenUrls: req.body.children.map(el => {
-            return {
-                child: el
-            }
-        }) ,
-        depth: req.body.depth
+      page: req.body.page,
+      isSpa: req.body.isSpa,
+      method: req.body.method,
+      numberOfChildren: req.body.numberOfChildren
     });
     seed.save()
       .then(() => {
@@ -25,7 +23,7 @@ seedRoutes.route('/add').post( (req, res) => {
   });
 
 seedRoutes.route('/fetchAll').get((req, res) => {
-  Seed.find({} , '_id parentUrl').then(seeds => {
+  Seed.find({} , '_id page').then(seeds => {
     res.status(200).send(seeds)
   }).catch(err => {
     res.status(400).send(err)

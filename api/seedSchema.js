@@ -4,15 +4,20 @@ const Schema = mongoose.Schema
 
 //define the seed document schema
 const seedSchema = new Schema({
-    parentUrl:{
+    page:{
         type: String,
         required: true,
         unique: true
     },
-    childrenUrls: [
-        {child: String}
-    ],
-    depth:{
+    isSpa: {
+        type: Boolean,
+        required: true
+    }, 
+    method:{
+        type: Number,
+        required: true
+    },
+    numberOfChildren: {
         type: Number,
         required: true
     }
