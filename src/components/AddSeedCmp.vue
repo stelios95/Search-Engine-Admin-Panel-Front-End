@@ -33,9 +33,9 @@
             <!-- is spa -->
             <b-form-group
               id="input-group-2"
-              label="Singificant Children URLs"
+              label="Is Single Page Application"
               label-for="input-2"
-              description="Set the children URLs that need their content to be updated on each line."
+              description="Check the box if the page is a Single Page Application"
             >
               <b-form-checkbox
                 id="input-2"
@@ -44,12 +44,14 @@
                 name="checkbox-1"
                 value="isSpa"
                 unchecked-value="isNotSpa"
+                @change="isSpaCheckboxChange"
               >Is SPA</b-form-checkbox>
             </b-form-group>
             <!-- end of spa -->
 
             <!-- select crawling method -->
             <b-form-group
+              v-if="addSeedConfig.isSpa"
               id="input-group-3"
               label="Crawling Method"
               label-for="input-3"
@@ -103,7 +105,6 @@
 
 <script>
 import { extend } from "vee-validate";
-
 export default {
   data() {
     return {
@@ -113,7 +114,7 @@ export default {
         page: "",
         isSpa: false,
         method: 0,
-        numberOfChildren: 0
+        numberOfChildren: 1
       },
       show: true,
       showSpinner: false,
@@ -123,8 +124,16 @@ export default {
         { value: 1, text: "Puppeteer" }
       ],
       numberOfChildrenOptions: [
-        { value: 0, text: "Cheerio" },
-        { value: 1, text: "Puppeteer" }
+        { value: 1, text: 1 },
+        { value: 2, text: 2 },
+        { value: 3, text: 3 },
+        { value: 4, text: 4 },
+        { value: 5, text: 5 },
+        { value: 6, text: 6 },
+        { value: 7, text: 7 },
+        { value: 8, text: 8 },
+        { value: 9, text: 9 },
+        { value: 10, text: 10 }
       ],
       showLoadingMessage: false,
       resultMessage: "",
@@ -148,8 +157,12 @@ export default {
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
     },
+    isSpaCheckboxChange(evt) {
+      this.addSeedConfig.isSpa = evt === "isNotSpa" ? false : true;
+      console.log(this.addSeedConfig.isSpa);
+    },
     onSubmit() {
-      this.isSpa = this.isSpaValue === "isNotSpa" ? false : true 
+      this.isSpa = this.isSpaValue === "isNotSpa" ? false : true;
       console.log(JSON.stringify(this.addSeedConfig));
       this.showLoadingMessage = true;
       let uri = "http://localhost:5000/seeds/add";
@@ -189,8 +202,9 @@ export default {
       evt.preventDefault();
       this.addSeedConfig.page = "";
       this.addSeedConfig.isSpa = false;
+      this.isSpaValue = "isNotSpa";
       this.addSeedConfig.method = 0;
-      this.addSeedConfig.numberOfChildren = 0;
+      this.addSeedConfig.numberOfChildren = 1;
       this.showMessage = false;
       this.showSpinner = false;
       console.log(JSON.stringify(this.addSeedConfig));
