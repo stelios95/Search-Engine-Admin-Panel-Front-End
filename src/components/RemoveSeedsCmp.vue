@@ -12,7 +12,9 @@
         <b-spinner variant="primary"></b-spinner>
       </div>
       <div v-if="showErrorMessage" class="text-center">
-        <p class="text-danger"><b>An error occurred: {{errorMessage}}</b></p>
+        <p class="text-danger">
+          <b>An error occurred: {{errorMessage}}</b>
+        </p>
       </div>
       <b-table
         v-else
@@ -26,10 +28,9 @@
         :per-page="perPage"
         :current-page="currentPage"
       ></b-table>
-      <b-row align-v="center" align-h="center" cols="3">
+      <b-row v-if="showControls" align-v="center" align-h="center" cols="3">
         <b-col>
           <b-form-checkbox
-            v-if="showCheckbox"
             class="mr-2"
             id="checkbox-1"
             v-model="status"
@@ -74,7 +75,7 @@ export default {
       isDisabled: false,
       showErrorMessage: false,
       errorMessage: "",
-      showCheckbox: false
+      showControls: false
     };
   },
   mounted() {
@@ -87,25 +88,25 @@ export default {
   },
   methods: {
     fetchAll() {
-      this.isDisabled = true
-      this.showSpinner = true
-      this.showErrorMessage = false
-      this.errorMessage = ""
+      this.isDisabled = true;
+      this.showSpinner = true;
+      this.showErrorMessage = false;
+      this.errorMessage = "";
       let uri = "http://localhost:5000/seeds/fetchAll";
       this.axios
         .get(uri)
         .then(res => {
           this.items = res.data;
           this.showSpinner = false;
-          this.isDisabled = false
-          this.showCheckbox = true
+          this.isDisabled = false;
+          this.showControls = true;
         })
         .catch(err => {
           console.log(err.message);
-          this.showSpinner = false
-          this.showErrorMessage = true
-          this.errorMessage = err.message
-          this.showCheckbox = false
+          this.showSpinner = false;
+          this.showErrorMessage = true;
+          this.errorMessage = err.message;
+          this.showControls = false;
         });
     },
     selectRowsHandle(evt) {
@@ -123,7 +124,7 @@ export default {
       this.$refs.selectableTable.clearSelected();
     },
     removeSelected() {
-      this.isDisabled = true
+      this.isDisabled = true;
       let uri = "http://localhost:5000/seeds/removeSeeds";
       let ids = new Array();
       this.selected.forEach(el => {
