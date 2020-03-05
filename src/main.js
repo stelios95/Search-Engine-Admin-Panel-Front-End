@@ -15,11 +15,12 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
 
 //components
-
 import GlobalConfigsCmp from "./components/GlobalConfigsCmp.vue";
 import AddSeedCmp from "./components/AddSeedCmp.vue";
 import RemoveSeedsCmp from "./components/RemoveSeedsCmp.vue";
 import LoginCmp from "./components/LoginCmp.vue"
+import NotFoundCmp from "./components/NotFoundCmp.vue"
+
 import VueAxios from "vue-axios";
 import axios from "axios";
 
@@ -66,6 +67,11 @@ const routes = [
     name: 'login',
     path: '/login',
     component: LoginCmp
+  },
+  {
+    name: 'notFound',
+    path: '*',
+    component: NotFoundCmp
   }
 ];
 
