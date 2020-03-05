@@ -12,7 +12,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
-            <b-link to='/login' v-if="authenticated" size="sm" class="my-2 my-sm-0" @click.native="logout" replace  router-tag="b-button">Log out</b-link>
+            <b-button  v-if="authenticated" size="sm" class="my-2 my-sm-0" @click="logout">Log out</b-button >
           </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
