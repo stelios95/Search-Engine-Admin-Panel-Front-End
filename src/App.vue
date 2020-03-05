@@ -25,7 +25,7 @@
 export default {
   data(){
     return {
-      authenticated: false
+      authenticated: sessionStorage.getItem("authenticated")
     }
   },
      mounted(){
@@ -39,8 +39,10 @@ export default {
             },
             logout() {
               console.log('button pressed')
-              this.authenticated = false;
-                
+              this.setAuthenticated(false)
+              sessionStorage.removeItem("authenticated")
+              console.log(this.authenticated)
+              this.$router.replace({ name: "login" });
             }
         }
 };

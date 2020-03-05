@@ -46,6 +46,7 @@ export default {
   },
   methods: {
     onSubmit() {
+      sessionStorage.setItem("authenticated", true)
       this.$emit("authenticated", true);
       this.$router.replace({ name: "global" });
     },

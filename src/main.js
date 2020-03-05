@@ -71,4 +71,20 @@ const routes = [
 
 const router = new VueRouter({ mode: "history", routes: routes });
 
+router.beforeEach((to, from, next) => {
+  if (to.fullPath === '/global' ||
+      to.fullPath === '/add' ||
+      to.fullPath === '/remove') {
+    if (!sessionStorage.getItem("authenticated")) {
+      next('/login');
+    }
+  }
+  if (to.fullPath === '/login') {
+    if (sessionStorage.getItem("authenticated")) {
+      next('/global');
+    }
+  }
+  next();
+});
+
 new Vue(Vue.util.extend({ router }, App)).$mount("#app");
