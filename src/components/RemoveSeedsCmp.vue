@@ -11,6 +11,9 @@
       <div v-if="showSpinner" class="text-center">
         <b-spinner variant="primary"></b-spinner>
       </div>
+      <div v-if="showErrorMessage" class="text-center">
+        <p class="text-danger"><b>An error occurred: {{errorMessage}}</b></p>
+      </div>
       <b-table
         v-else
         id="my-table"
@@ -26,6 +29,7 @@
       <b-row align-v="center" align-h="center" cols="3">
         <b-col>
           <b-form-checkbox
+            v-if="showCheckbox"
             class="mr-2"
             id="checkbox-1"
             v-model="status"
@@ -67,7 +71,10 @@ export default {
       selected: [],
       items: [],
       showSpinner: true,
-      isDisabled: false
+      isDisabled: false,
+      showErrorMessage: false,
+      errorMessage: "",
+      showCheckbox: false
     };
   },
   mounted() {
@@ -81,6 +88,9 @@ export default {
   methods: {
     fetchAll() {
       this.isDisabled = true
+      this.showSpinner = true
+      this.showErrorMessage = false
+      this.errorMessage = ""
       let uri = "http://localhost:5000/seeds/fetchAll";
       this.axios
         .get(uri)
@@ -88,9 +98,14 @@ export default {
           this.items = res.data;
           this.showSpinner = false;
           this.isDisabled = false
+          this.showCheckbox = true
         })
         .catch(err => {
           console.log(err.message);
+          this.showSpinner = false
+          this.showErrorMessage = true
+          this.errorMessage = err.message
+          this.showCheckbox = false
         });
     },
     selectRowsHandle(evt) {
