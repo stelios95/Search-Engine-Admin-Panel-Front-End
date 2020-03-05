@@ -57,7 +57,7 @@
               label-for="input-3"
               description="Set the crawling method of this page."
             >
-              <b-form-select id="input-3" v-model="addSeedConfig.method" :options="methodOptions"></b-form-select>
+              <b-form-select id="input-3" v-model="addSeedConfig.method" :options="methodOptions" @change="setNumberOfChildren"></b-form-select>
             </b-form-group>
             <!-- end of select crawling method -->
 
@@ -114,7 +114,7 @@ export default {
         page: "",
         isSpa: false,
         method: 0,
-        numberOfChildren: 1
+        numberOfChildren: 30
       },
       show: true,
       showSpinner: false,
@@ -123,18 +123,7 @@ export default {
         { value: 0, text: "Cheerio" },
         { value: 1, text: "Puppeteer" }
       ],
-      numberOfChildrenOptions: [
-        { value: 1, text: 1 },
-        { value: 2, text: 2 },
-        { value: 3, text: 3 },
-        { value: 4, text: 4 },
-        { value: 5, text: 5 },
-        { value: 6, text: 6 },
-        { value: 7, text: 7 },
-        { value: 8, text: 8 },
-        { value: 9, text: 9 },
-        { value: 10, text: 10 }
-      ],
+      numberOfChildrenOptions: [],
       showLoadingMessage: false,
       resultMessage: "",
       isDisabled: false,
@@ -160,6 +149,22 @@ export default {
     isSpaCheckboxChange(evt) {
       this.addSeedConfig.isSpa = evt === "isNotSpa" ? false : true;
       console.log(this.addSeedConfig.isSpa);
+    },
+    setNumberOfChildren(evt){
+      if(evt === 0){
+        this.numberOfChildrenOptions = this.getNumberOfChildrenOptions(30)
+        this.addSeedConfig.numberOfChildren = 30
+      } else {
+        this.numberOfChildrenOptions = this.getNumberOfChildrenOptions(10)
+        this.addSeedConfig.numberOfChildren = 10
+      }
+    },
+    getNumberOfChildrenOptions(n){
+      let options = new Array();
+      for(let i = 1; i <= n; i++){
+        options.push({value: i, text: i.toString()})
+      }
+      return options
     },
     onSubmit() {
       this.isSpa = this.isSpaValue === "isNotSpa" ? false : true;
@@ -221,7 +226,8 @@ export default {
         return true;
       }
       return "You must give a valid URL!";
-    });
+    }),
+    this.numberOfChildrenOptions = this.getNumberOfChildrenOptions(30)
   }
 };
 </script>
