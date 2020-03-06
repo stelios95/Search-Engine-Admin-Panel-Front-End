@@ -125,6 +125,9 @@ export default {
     },
     removeSelected() {
       this.isDisabled = true;
+      this.showSpinner = true
+      this.errorMessage = "";
+      this.showErrorMessage = false;
       let uri = "http://localhost:5000/seeds/removeSeeds";
       let ids = new Array();
       this.selected.forEach(el => {
@@ -133,12 +136,14 @@ export default {
       this.axios
         .post(uri, ids)
         .then(result => {
+          this.showSpinner = false;
           console.log(result);
           setTimeout(() => {
             location.reload();
-          }, 800);
+          }, 700);
         })
         .catch(err => {
+          this.showErrorMessage = true
           console.log(err);
         });
     }

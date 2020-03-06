@@ -209,7 +209,7 @@ export default {
       this.addSeedConfig.isSpa = false;
       this.isSpaValue = "isNotSpa";
       this.addSeedConfig.method = 0;
-      this.addSeedConfig.numberOfChildren = 1;
+      this.addSeedConfig.numberOfChildren = 30;
       this.showMessage = false;
       this.showSpinner = false;
       console.log(JSON.stringify(this.addSeedConfig));
