@@ -28,9 +28,11 @@
               <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
             </validation-provider>
 
-            <b-button class="my-2" variant="success" type="submit">Login</b-button>
+            <b-button class="my-2" variant="success" type="submit"> <b-spinner v-if="showSpinner" small></b-spinner>Login</b-button>
+            
           </b-form>
         </validation-observer>
+        <p v-if="showErrorMessage" class="text-danger"><b>{{errorMessage}}</b></p>
       </b-card>
     </div>
   </b-container>
@@ -43,24 +45,36 @@ export default {
       credentials: {
         username: "",
         password: ""
-      }
+      },
+      errorMessage: "",
+      showErrorMessage: false,
+      showSpinner: false
     };
   },
   methods: {
     onSubmit() {
+      this.showErrorMessage = false
+      this.showSpinner = true
       let uri = "http://localhost:5000/seeds/login";
       this.axios
         .post(uri, this.credentials)
         .then(response => {
+          this.showSpinner = false
           console.log(JSON.stringify(response));
           if (response.data === "ok") {
             sessionStorage.setItem("authenticated", true);
             this.$emit("authenticated", true);
             this.$router.replace({ name: "global" });
+          } else {
+            this.errorMessage = response.data
+            this.showErrorMessage = true
           }
         })
         .catch(err => {
           console.log(err.message);
+          this.showSpinner = false
+          this.errorMessage = err.message
+          this.showErrorMessage = true
         });
     },
     getValidationState({ dirty, validated, valid = null }) {
