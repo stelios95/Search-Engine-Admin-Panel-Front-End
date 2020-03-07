@@ -81,12 +81,12 @@ router.beforeEach((to, from, next) => {
   if (to.fullPath === '/global' ||
       to.fullPath === '/add' ||
       to.fullPath === '/remove') {
-    if (!sessionStorage.getItem("authenticated")) {
+    if (!sessionStorage.getItem("token")) {
       next('/login');
     }
   }
   if (to.fullPath === '/login') {
-    if (sessionStorage.getItem("authenticated")) {
+    if (sessionStorage.getItem("token")) {
       next('/global');
     }
   }

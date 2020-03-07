@@ -60,21 +60,22 @@ export default {
         .post(uri, this.credentials)
         .then(response => {
           this.showSpinner = false
-          console.log(JSON.stringify(response));
-          if (response.data === "ok") {
-            sessionStorage.setItem("authenticated", true);
-            this.$emit("authenticated", true);
-            this.$router.replace({ name: "global" });
-          } else {
-            this.errorMessage = response.data
-            this.showErrorMessage = true
-          }
+          console.log('Response' + JSON.stringify(response));
+            sessionStorage.setItem("token", response.data.token)
+            //this.$router.replace({ name: "global" });
+            location.reload()
         })
         .catch(err => {
-          console.log(err.message);
-          this.showSpinner = false
-          this.errorMessage = err.message
-          this.showErrorMessage = true
+          if(err.response){
+            this.showSpinner = false
+            this.errorMessage = err.response.data.message
+            this.showErrorMessage = true
+          } else {
+            this.showSpinner = false
+            this.errorMessage = err
+            this.showErrorMessage = true
+          }
+          
         });
     },
     getValidationState({ dirty, validated, valid = null }) {

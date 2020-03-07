@@ -94,8 +94,13 @@ export default {
       this.errorMessage = "";
       let uri = "http://localhost:5000/seeds/fetchAll";
       this.axios
-        .get(uri)
+        .get(uri, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+          }
+        })
         .then(res => {
+          console.log(JSON.stringify(res))
           this.items = res.data;
           this.showSpinner = false;
           this.isDisabled = false;
@@ -125,7 +130,7 @@ export default {
     },
     removeSelected() {
       this.isDisabled = true;
-      this.showSpinner = true
+      this.showSpinner = true;
       this.errorMessage = "";
       this.showErrorMessage = false;
       let uri = "http://localhost:5000/seeds/removeSeeds";
@@ -134,7 +139,11 @@ export default {
         ids.push(el._id);
       });
       this.axios
-        .post(uri, ids)
+        .post(uri, ids, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+          }
+        })
         .then(result => {
           this.showSpinner = false;
           console.log(result);
@@ -143,7 +152,7 @@ export default {
           }, 700);
         })
         .catch(err => {
-          this.showErrorMessage = true
+          this.showErrorMessage = true;
           console.log(err);
         });
     }

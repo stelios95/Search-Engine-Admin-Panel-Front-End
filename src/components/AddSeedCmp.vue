@@ -175,7 +175,11 @@ export default {
       this.showMessage = false;
       this.isDisabled = true;
       this.axios
-        .post(uri, this.addSeedConfig)
+        .post(uri, this.addSeedConfig, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+          }
+        })
         .then(response => {
           if (response.status === 200) {
             this.resultMessage = "Seed settings saved!";
