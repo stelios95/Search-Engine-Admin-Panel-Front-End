@@ -2,6 +2,7 @@ const express = require('express');
 const seedRoutes = express.Router();
 
 let Seed = require('./seedSchema');
+let User = require('./userSchema');
 
 seedRoutes.route('/add').post( (req, res) => {
   console.log(req.body)
@@ -34,6 +35,20 @@ seedRoutes.route('/removeSeeds').post((req, res) => {
   console.log('body: ' + JSON.stringify(req.body))
   Seed.deleteMany({ _id: req.body}).then(result => {
     res.status(200).send(result)
+  }).catch(err => {
+    res.status(400).send(err)
+  })
+})
+
+seedRoutes.route('/login').post((req, res) => {
+  console.log('body: ' + JSON.stringify(req.body))
+  User.find({username: req.body.username, password: req.body.password}).then(result => {
+    console.log(result)
+    if(!Array.isArray(result) || !result.length){
+      res.status(200).send("Invalid Credentials")
+    } else {
+      res.status(200).send("ok")
+    }
   }).catch(err => {
     res.status(400).send(err)
   })

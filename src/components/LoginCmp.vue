@@ -7,7 +7,7 @@
             <validation-provider name="Username" rules="required" v-slot="validationContext">
               <b-form-input
                 class="p-3 my-2"
-                v-model="username"
+                v-model="credentials.username"
                 type="text"
                 placeholder="Enter your username"
                 :state="getValidationState(validationContext)"
@@ -19,7 +19,7 @@
             <validation-provider name="Password" rules="required" v-slot="validationContext">
               <b-form-input
                 class="p-3 my-2"
-                v-model="password"
+                v-model="credentials.password"
                 type="password"
                 placeholder="Enter your password"
                 :state="getValidationState(validationContext)"
@@ -40,15 +40,28 @@
 export default {
   data() {
     return {
-      username: "",
-      password: ""
+      credentials: {
+        username: "",
+        password: ""
+      }
     };
   },
   methods: {
     onSubmit() {
-      sessionStorage.setItem("authenticated", true)
-      this.$emit("authenticated", true);
-      this.$router.replace({ name: "global" });
+      let uri = "http://localhost:5000/seeds/login";
+      this.axios
+        .post(uri, this.credentials)
+        .then(response => {
+          console.log(JSON.stringify(response));
+          if (response.data === "ok") {
+            sessionStorage.setItem("authenticated", true);
+            this.$emit("authenticated", true);
+            this.$router.replace({ name: "global" });
+          }
+        })
+        .catch(err => {
+          console.log(err.message);
+        });
     },
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
