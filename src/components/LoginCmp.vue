@@ -28,11 +28,14 @@
               <b-form-invalid-feedback id="input-2-live-feedback">{{ validationContext.errors[0] }}</b-form-invalid-feedback>
             </validation-provider>
 
-            <b-button class="my-2" variant="success" type="submit"> <b-spinner v-if="showSpinner" small></b-spinner>Login</b-button>
-            
+            <b-button class="my-2" variant="success" type="submit">
+              <b-spinner v-if="showSpinner" small></b-spinner>Login
+            </b-button>
           </b-form>
         </validation-observer>
-        <p v-if="showErrorMessage" class="text-danger"><b>{{errorMessage}}</b></p>
+        <p v-if="showErrorMessage" class="text-danger">
+          <b>{{errorMessage}}</b>
+        </p>
       </b-card>
     </div>
   </b-container>
@@ -53,29 +56,28 @@ export default {
   },
   methods: {
     onSubmit() {
-      this.showErrorMessage = false
-      this.showSpinner = true
+      this.showErrorMessage = false;
+      this.showSpinner = true;
       let uri = "http://localhost:5000/seeds/login";
       this.axios
         .post(uri, this.credentials)
         .then(response => {
-          this.showSpinner = false
-          console.log('Response' + JSON.stringify(response));
-            sessionStorage.setItem("token", response.data.token)
-            //this.$router.replace({ name: "global" });
-            location.reload()
+          this.showSpinner = false;
+          console.log("Response" + JSON.stringify(response));
+          sessionStorage.setItem("token", response.data.token);
+          //this.$router.replace({ name: "global" });
+          location.reload();
         })
         .catch(err => {
-          if(err.response){
-            this.showSpinner = false
-            this.errorMessage = err.response.data.message
-            this.showErrorMessage = true
+          if (err.response) {
+            this.showSpinner = false;
+            this.errorMessage = err.response.data.message;
+            this.showErrorMessage = true;
           } else {
-            this.showSpinner = false
-            this.errorMessage = err
-            this.showErrorMessage = true
+            this.showSpinner = false;
+            this.errorMessage = err;
+            this.showErrorMessage = true;
           }
-          
         });
     },
     getValidationState({ dirty, validated, valid = null }) {

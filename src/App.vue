@@ -43,7 +43,7 @@ export default {
       sessionStorage.removeItem("token");
       console.log(this.authenticated);
       this.$router.replace({ name: "login" });
-      location.reload()
+      location.reload();
     }
   }
 };

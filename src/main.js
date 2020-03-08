@@ -18,8 +18,8 @@ import "bootstrap-vue/dist/bootstrap-vue.css";
 import GlobalConfigsCmp from "./components/GlobalConfigsCmp.vue";
 import AddSeedCmp from "./components/AddSeedCmp.vue";
 import RemoveSeedsCmp from "./components/RemoveSeedsCmp.vue";
-import LoginCmp from "./components/LoginCmp.vue"
-import NotFoundCmp from "./components/NotFoundCmp.vue"
+import LoginCmp from "./components/LoginCmp.vue";
+import NotFoundCmp from "./components/NotFoundCmp.vue";
 
 import VueAxios from "vue-axios";
 import axios from "axios";
@@ -43,9 +43,9 @@ Vue.config.productionTip = false;
 
 const routes = [
   {
-    path: '/', 
+    path: "/",
     redirect: {
-      name: 'login'
+      name: "login"
     }
   },
   {
@@ -64,13 +64,13 @@ const routes = [
     component: RemoveSeedsCmp
   },
   {
-    name: 'login',
-    path: '/login',
+    name: "login",
+    path: "/login",
     component: LoginCmp
   },
   {
-    name: 'notFound',
-    path: '*',
+    name: "notFound",
+    path: "*",
     component: NotFoundCmp
   }
 ];
@@ -78,16 +78,18 @@ const routes = [
 const router = new VueRouter({ mode: "history", routes: routes });
 
 router.beforeEach((to, from, next) => {
-  if (to.fullPath === '/global' ||
-      to.fullPath === '/add' ||
-      to.fullPath === '/remove') {
+  if (
+    to.fullPath === "/global" ||
+    to.fullPath === "/add" ||
+    to.fullPath === "/remove"
+  ) {
     if (!sessionStorage.getItem("token")) {
-      next('/login');
+      next("/login");
     }
   }
-  if (to.fullPath === '/login') {
+  if (to.fullPath === "/login") {
     if (sessionStorage.getItem("token")) {
-      next('/global');
+      next("/global");
     }
   }
   next();

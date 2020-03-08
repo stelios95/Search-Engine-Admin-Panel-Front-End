@@ -100,11 +100,11 @@ export default {
           }
         })
         .then(res => {
-          console.log(JSON.stringify(res))
+          console.log(JSON.stringify(res));
           this.items = res.data;
-          if(!this.items.length) {
+          if (!this.items.length) {
             this.showErrorMessage = true;
-            this.errorMessage = 'No pages found.';
+            this.errorMessage = "No pages found.";
             this.showControls = false;
             this.showSpinner = false;
           } else {
@@ -112,7 +112,6 @@ export default {
             //this.isDisabled = false;
             this.showControls = true;
           }
-          
         })
         .catch(err => {
           console.log(err.message);
@@ -127,17 +126,16 @@ export default {
       evt === "allSelected" ? this.selectAllRows() : this.clearSelected();
     },
     onRowSelected(items) {
-      
-      this.isDisabled = !items.length
+      this.isDisabled = !items.length;
       this.selected = items;
       console.log(JSON.stringify(this.selected));
     },
     selectAllRows() {
-      this.isDisabled = false
+      this.isDisabled = false;
       this.$refs.selectableTable.selectAllRows();
     },
     clearSelected() {
-      this.isDisabled = true
+      this.isDisabled = true;
       this.$refs.selectableTable.clearSelected();
     },
     removeSelected() {
