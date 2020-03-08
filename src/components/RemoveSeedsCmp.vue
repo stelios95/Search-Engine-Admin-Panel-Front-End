@@ -72,7 +72,7 @@ export default {
       selected: [],
       items: [],
       showSpinner: true,
-      isDisabled: false,
+      isDisabled: true,
       showErrorMessage: false,
       errorMessage: "",
       showControls: false
@@ -109,7 +109,7 @@ export default {
             this.showSpinner = false;
           } else {
             this.showSpinner = false;
-            this.isDisabled = false;
+            //this.isDisabled = false;
             this.showControls = true;
           }
           
@@ -127,13 +127,17 @@ export default {
       evt === "allSelected" ? this.selectAllRows() : this.clearSelected();
     },
     onRowSelected(items) {
+      
+      this.isDisabled = !items.length
       this.selected = items;
       console.log(JSON.stringify(this.selected));
     },
     selectAllRows() {
+      this.isDisabled = false
       this.$refs.selectableTable.selectAllRows();
     },
     clearSelected() {
+      this.isDisabled = true
       this.$refs.selectableTable.clearSelected();
     },
     removeSelected() {
