@@ -102,9 +102,17 @@ export default {
         .then(res => {
           console.log(JSON.stringify(res))
           this.items = res.data;
-          this.showSpinner = false;
-          this.isDisabled = false;
-          this.showControls = true;
+          if(!this.items.length) {
+            this.showErrorMessage = true;
+            this.errorMessage = 'No pages found.';
+            this.showControls = false;
+            this.showSpinner = false;
+          } else {
+            this.showSpinner = false;
+            this.isDisabled = false;
+            this.showControls = true;
+          }
+          
         })
         .catch(err => {
           console.log(err.message);
