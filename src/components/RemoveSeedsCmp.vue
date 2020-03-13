@@ -92,7 +92,7 @@ export default {
       this.showSpinner = true;
       this.showErrorMessage = false;
       this.errorMessage = "";
-      let uri = "https://crawler-admin-config.herokuapp.com/seeds/fetchAll";
+      let uri = "https://crawler-admin-config-be.herokuapp.com/seeds/fetchAll";
       this.axios
         .get(uri, {
           headers: {
@@ -143,7 +143,7 @@ export default {
       this.showSpinner = true;
       this.errorMessage = "";
       this.showErrorMessage = false;
-      let uri = "https://crawler-admin-config.herokuapp.comσ/seeds/removeSeeds";
+      let uri = "https://crawler-admin-config-be.herokuapp.com/seeds/removeSeeds";
       let ids = new Array();
       this.selected.forEach(el => {
         ids.push(el._id);
