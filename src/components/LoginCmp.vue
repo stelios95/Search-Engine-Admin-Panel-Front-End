@@ -58,7 +58,7 @@ export default {
     onSubmit() {
       this.showErrorMessage = false;
       this.showSpinner = true;
-      let uri = "http://localhost:5000/seeds/login";
+      let uri = "https://crawler-admin-config.herokuapp.com/seeds/login";
       this.axios
         .post(uri, this.credentials)
         .then(response => {

@@ -175,7 +175,7 @@ export default {
       this.isSpa = this.isSpaValue === "isNotSpa" ? false : true;
       console.log(JSON.stringify(this.addSeedConfig));
       this.showLoadingMessage = true;
-      let uri = "http://localhost:5000/seeds/add";
+      let uri = "https://crawler-admin-config.herokuapp.com/seeds/add";
       this.showSpinner = true;
       this.showMessage = false;
       this.isDisabled = true;

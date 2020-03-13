@@ -92,7 +92,7 @@ export default {
       this.showSpinner = true;
       this.showErrorMessage = false;
       this.errorMessage = "";
-      let uri = "http://localhost:5000/seeds/fetchAll";
+      let uri = "https://crawler-admin-config.herokuapp.com/seeds/fetchAll";
       this.axios
         .get(uri, {
           headers: {
@@ -143,7 +143,7 @@ export default {
       this.showSpinner = true;
       this.errorMessage = "";
       this.showErrorMessage = false;
-      let uri = "http://localhost:5000/seeds/removeSeeds";
+      let uri = "https://crawler-admin-config.herokuapp.comσ/seeds/removeSeeds";
       let ids = new Array();
       this.selected.forEach(el => {
         ids.push(el._id);
