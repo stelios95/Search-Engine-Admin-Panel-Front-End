@@ -28,10 +28,9 @@
         :per-page="perPage"
         :current-page="currentPage"
       ></b-table>
-      <b-row v-if="showControls" align-v="center" align-h="center" cols="3">
-        <b-col>
+      <b-row v-if="showControls"  cols="3">
+        <b-col class="xs-3">
           <b-form-checkbox
-            class="mr-2"
             id="checkbox-1"
             v-model="status"
             name="checkbox-1"
@@ -40,32 +39,39 @@
             @change="selectRowsHandle"
           >Select All</b-form-checkbox>
         </b-col>
-        <b-col>
+        <b-col class="xs-3">
           <b-pagination
             v-model="currentPage"
             :total-rows="rows"
             :per-page="perPage"
             aria-controls="my-table"
-            class="mt-3"
           ></b-pagination>
         </b-col>
-        <b-col>
+        <b-col class="xs-3">
           <b-button
-            class="float-right"
+          v-if="!isMobile"
             v-on:click="removeSelected"
             variant="success"
             v-bind:disabled="isDisabled"
           >Remove Selected</b-button>
         </b-col>
       </b-row>
+      <b-button
+      v-if="isMobile"
+            v-on:click="removeSelected"
+            variant="success"
+            v-bind:disabled="isDisabled"
+          >Remove Selected</b-button>
     </b-card>
   </b-container>
 </template>
 
 <script>
 export default {
+ 
   data() {
     return {
+      isMobile: false,
       status: "noneSelected",
       perPage: 6,
       currentPage: 1,
@@ -78,7 +84,19 @@ export default {
       showControls: false
     };
   },
+  created(){
+    this.BASE_URL = "https://crawler-admin-config-be.herokuapp.com"
+  },
   mounted() {
+    if( navigator.userAgent.match(/Android/i)
+      || navigator.userAgent.match(/webOS/i)
+      || navigator.userAgent.match(/iPhone/i)
+      || navigator.userAgent.match(/iPad/i)
+      || navigator.userAgent.match(/iPod/i)
+      || navigator.userAgent.match(/BlackBerry/i)
+      || navigator.userAgent.match(/Windows Phone/i)){
+        this.isMobile = true
+      }
     this.fetchAll();
   },
   computed: {
@@ -92,7 +110,7 @@ export default {
       this.showSpinner = true;
       this.showErrorMessage = false;
       this.errorMessage = "";
-      let uri = "https://crawler-admin-config-be.herokuapp.com/seeds/fetchAll";
+      let uri = this.BASE_URL + "/seeds/fetchAll";
       this.axios
         .get(uri, {
           headers: {
@@ -143,7 +161,7 @@ export default {
       this.showSpinner = true;
       this.errorMessage = "";
       this.showErrorMessage = false;
-      let uri = "https://crawler-admin-config-be.herokuapp.com/seeds/removeSeeds";
+      let uri = this.BASE_URL + "/seeds/removeSeeds";
       let ids = new Array();
       this.selected.forEach(el => {
         ids.push(el._id);

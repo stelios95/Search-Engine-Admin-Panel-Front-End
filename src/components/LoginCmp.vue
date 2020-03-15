@@ -54,11 +54,14 @@ export default {
       showSpinner: false
     };
   },
+  created(){
+    this.BASE_URL = "https://crawler-admin-config-be.herokuapp.com"
+  },
   methods: {
     onSubmit() {
       this.showErrorMessage = false;
       this.showSpinner = true;
-      let uri = "https://crawler-admin-config-be.herokuapp.com/seeds/login";
+      let uri = this.BASE_URL + "/seeds/login";
       this.axios
         .post(uri, this.credentials)
         .then(response => {

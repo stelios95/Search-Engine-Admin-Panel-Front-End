@@ -175,7 +175,7 @@ export default {
       this.isSpa = this.isSpaValue === "isNotSpa" ? false : true;
       console.log(JSON.stringify(this.addSeedConfig));
       this.showLoadingMessage = true;
-      let uri = "https://crawler-admin-config-be.herokuapp.com/seeds/add";
+      let uri = this.BASE_URL + "/seeds/add";
       this.showSpinner = true;
       this.showMessage = false;
       this.isDisabled = true;
@@ -228,6 +228,9 @@ export default {
         this.show = true;
       });
     }
+  },
+  created(){
+    this.BASE_URL = "https://crawler-admin-config-be.herokuapp.com"
   },
   mounted() {
     extend("url", value => {
