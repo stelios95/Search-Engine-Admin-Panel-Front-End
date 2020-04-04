@@ -174,8 +174,8 @@ export default {
     onSubmit() {
       this.isSpa = this.isSpaValue === "isNotSpa" ? false : true;
       console.log(JSON.stringify(this.addSeedConfig));
-      this.showLoadingMessage = true;
       let uri = this.BASE_URL + "/seeds/add";
+      this.showLoadingMessage = true;
       this.showSpinner = true;
       this.showMessage = false;
       this.isDisabled = true;

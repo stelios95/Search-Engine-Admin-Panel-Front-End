@@ -50,9 +50,21 @@
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
-
-            <b-button class="mr-2" type="submit" variant="success">Submit</b-button>
-            <b-button type="reset">Defaults</b-button>
+              <div class="d-flex flex-row">
+              <p class="mr-2" v-if="showLoadingMessage">Sending data to server...</p>
+              <p
+                v-if="showMessage"
+                v-bind="resultMessage"
+                v-bind:class="{'text-success': isSuccess, 
+                                'text-danger': !isSuccess
+                                }"
+              >
+                <b>{{ resultMessage }}</b>
+              </p>
+              <b-spinner class="spinner-border-sm mt-1" v-if="showSpinner" variant="primary"></b-spinner>
+              </div>
+            <b-button class="mr-2" type="submit" variant="success" v-bind:disabled="isDisabled">Submit</b-button>
+            <b-button type="reset" v-bind:disabled="isDisabled">Defaults</b-button>
           </b-form>
         </validation-observer>
       </b-card>
@@ -69,6 +81,12 @@ export default {
         crawlFreq: 24
       },
       show: true,
+      showSpinner: false,
+      showMessage: false,
+      showLoadingMessage: false,
+      resultMessage: "",
+      isDisabled: false,
+      isSuccess: false,
       updateFreqOptions: [
         { value: 3, text: "Every 3 hours" },
         { value: 6, text: "Every 6 hours" },
@@ -93,16 +111,35 @@ export default {
       console.log(JSON.stringify(this.globalConfig));
       //alert("Changes submited!");
       let uri = this.BASE_URL + "api/changeInterval"
+      this.showLoadingMessage = true;
+      this.showSpinner = true;
+      this.showMessage = false;
+      this.isDisabled = true;
       this.axios
         .post(uri, this.globalConfig).then(res => {
+          this.resultMessage = "Settings sent!";
+          this.showLoadingMessage = false;
+          this.showMessage = true;
+          this.showSpinner = false;
+          this.isSuccess = true;
+          this.isDisabled = false;
           console.log(res)
+          setTimeout(() => {
+            location.reload();
+          }, 800);
         }).catch(err => {
+          this.showLoadingMessage = false;
+          this.showSpinner = false;
+          this.isSuccess = false;
+          this.resultMessage =
+            "An Error occured: " + err.message.replace("Error:", "");
+          this.showMessage = true;
+          this.isDisabled = false;
           console.log(err)
         })
     },
     onReset(evt) {
       evt.preventDefault();
-      this.globalConfig.timeout = 1;
       this.globalConfig.updateFreq = 12;
       this.globalConfig.crawlFreq = 24;
       console.log(JSON.stringify(this.globalConfig));
