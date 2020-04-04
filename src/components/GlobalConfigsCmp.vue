@@ -108,13 +108,23 @@ export default {
       ]
     };
   },
+  created(){
+    this.BASE_URL = "http://localhost:5000/"
+  },
   methods: {
     getValidationState({ dirty, validated, valid = null }) {
       return dirty || validated ? valid : null;
     },
     onSubmit() {
       console.log(JSON.stringify(this.globalConfig));
-      alert("Changes submited!");
+      //alert("Changes submited!");
+      let uri = this.BASE_URL + "api/changeInterval"
+      this.axios
+        .post(uri, this.globalConfig).then(res => {
+          console.log(res)
+        }).catch(err => {
+          console.log(err)
+        })
     },
     onReset(evt) {
       evt.preventDefault();
