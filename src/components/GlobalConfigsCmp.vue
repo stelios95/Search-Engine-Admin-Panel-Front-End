@@ -7,42 +7,22 @@
       <b-card title="Set Global Parameters" style="max-width: 60rem;" class="mb-2">
         <validation-observer ref="observer" v-slot="{ passes }">
           <b-form @submit.stop.prevent="passes(onSubmit)" @reset="onReset" v-if="show">
-            <validation-provider name="Timeout" rules="required" v-slot="validationContext">
+            <validation-provider name="Update Interval" rules="required" v-slot="validationContext">
               <b-form-group
                 id="input-group-1"
-                label="Crawling Timeout"
+                label="Update Database Interval"
                 label-for="input-1"
-                description="Set the maximum hours the crawler can run."
+                description="Set the hourly interval to update database content."
               >
                 <b-form-select
                   id="input-1"
-                  v-model="globalConfig.timeout"
-                  :options="timeOutOptions"
+                  v-model="globalConfig.updateFreq"
+                  :options="updateFreqOptions"
                   :state="getValidationState(validationContext)"
                   aria-describedby="input-1-live-feedback"
                 ></b-form-select>
                 <b-form-invalid-feedback
                   id="input-1-live-feedback"
-                >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
-              </b-form-group>
-            </validation-provider>
-
-            <validation-provider name="Update Interval" rules="required" v-slot="validationContext">
-              <b-form-group
-                id="input-group-2"
-                label="Update Database Interval"
-                label-for="input-2"
-                description="Set the hourly interval to update database content."
-              >
-                <b-form-select
-                  id="input-2"
-                  v-model="globalConfig.updateFreq"
-                  :options="updateFreqOptions"
-                  :state="getValidationState(validationContext)"
-                  aria-describedby="input-2-live-feedback"
-                ></b-form-select>
-                <b-form-invalid-feedback
-                  id="input-2-live-feedback"
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
@@ -53,20 +33,20 @@
               v-slot="validationContext"
             >
               <b-form-group
-                id="input-group-3"
+                id="input-group-2"
                 label="Crawler Run Interval"
                 label-for="input-2"
                 description="Set the hourly interval to run the crawler."
               >
                 <b-form-select
-                  id="input-3"
+                  id="input-2"
                   v-model="globalConfig.crawlFreq"
                   :options="crawlFreqOptions"
                   :state="getValidationState(validationContext)"
-                  aria-describedby="input-3-live-feedback"
+                  aria-describedby="input-2-live-feedback"
                 ></b-form-select>
                 <b-form-invalid-feedback
-                  id="input-3-live-feedback"
+                  id="input-2-live-feedback"
                 >{{ validationContext.errors[0] }}</b-form-invalid-feedback>
               </b-form-group>
             </validation-provider>
@@ -85,16 +65,10 @@ export default {
   data() {
     return {
       globalConfig: {
-        timeout: 1,
         updateFreq: 12,
         crawlFreq: 24
       },
       show: true,
-      timeOutOptions: [
-        { value: 1, text: "After 1 hour" },
-        { value: 2, text: "After 2 hours" },
-        { value: 3, text: "After 3 hours" }
-      ],
       updateFreqOptions: [
         { value: 3, text: "Every 3 hours" },
         { value: 6, text: "Every 6 hours" },
