@@ -101,7 +101,7 @@ export default {
     };
   },
   created(){
-    this.BASE_URL = "http://localhost:5000/"
+    this.BASE_URL = "https://crawler-admin-config-be.herokuapp.com"
   },
   methods: {
     getValidationState({ dirty, validated, valid = null }) {
@@ -110,13 +110,17 @@ export default {
     onSubmit() {
       console.log(JSON.stringify(this.globalConfig));
       //alert("Changes submited!");
-      let uri = this.BASE_URL + "api/changeInterval"
+      let uri = this.BASE_URL + "/seeds/configure"
       this.showLoadingMessage = true;
       this.showSpinner = true;
       this.showMessage = false;
       this.isDisabled = true;
       this.axios
-        .post(uri, this.globalConfig).then(res => {
+        .post(uri, this.globalConfig, {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`
+          }
+        }).then(res => {
           this.resultMessage = "Settings sent!";
           this.showLoadingMessage = false;
           this.showMessage = true;
