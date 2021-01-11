@@ -117,9 +117,9 @@ export default {
       isDisabled: false,
       isSuccess: false,
       updateFreqOptions: [
-        { value: 2, text: "At 2:00am" },
-        { value: 3, text: "At 3:00am" },
-        { value: 4, text: "At 4:00am" },
+        { value: 2, text: "At 2:00 A.M." },
+        { value: 3, text: "At 3:00 A.M." },
+        { value: 4, text: "At 4:00 A.M." },
       ],
       crawlFreqOptions: [
         { value: 6, text: "Every 6 hours" },
