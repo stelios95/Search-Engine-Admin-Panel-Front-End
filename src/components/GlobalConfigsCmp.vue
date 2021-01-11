@@ -107,7 +107,7 @@ export default {
     return {
       globalConfig: {
         updateFreq: 2,
-        crawlFreq: 0,
+        crawlFreq: 12,
       },
       show: true,
       showSpinner: false,
