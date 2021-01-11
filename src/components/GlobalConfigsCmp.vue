@@ -106,8 +106,8 @@ export default {
   data() {
     return {
       globalConfig: {
-        updateFreq: 12,
-        crawlFreq: 24,
+        updateFreq: 2,
+        crawlFreq: 0,
       },
       show: true,
       showSpinner: false,
