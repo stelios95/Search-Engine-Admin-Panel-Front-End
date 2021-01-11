@@ -24,9 +24,9 @@
             >
               <b-form-group
                 id="input-group-1"
-                label="Update Database Interval"
+                label="Update Database Time"
                 label-for="input-1"
-                description="Set the hourly interval to update database content."
+                description="Set the time you to update database content."
               >
                 <b-form-select
                   id="input-1"
@@ -117,16 +117,14 @@ export default {
       isDisabled: false,
       isSuccess: false,
       updateFreqOptions: [
-        { value: 1, text: "Every 1 hour" },
-        { value: 3, text: "Every 3 hours" },
-        { value: 6, text: "Every 6 hours" },
-        { value: 9, text: "Every 9 hours" },
-        { value: 12, text: "Every 12 hours" },
+        { value: 2, text: "At 2:00am" },
+        { value: 3, text: "At 3:00am" },
+        { value: 4, text: "At 4:00am" },
       ],
       crawlFreqOptions: [
-        { value: 18, text: "Every 18 hours" },
-        { value: 24, text: "Every 24 hours" },
-        { value: 36, text: "Every 36 hours" },
+        { value: 6, text: "Every 6 hours" },
+        { value: 12, text: "Every 12 hours" },
+        { value: 0, text: "Every 24 hours" },
       ],
     };
   },
