@@ -26,7 +26,7 @@
                 id="input-group-1"
                 label="Update Database Time"
                 label-for="input-1"
-                description="Set the time you to update database content."
+                description="Set the time you would like to update database content."
               >
                 <b-form-select
                   id="input-1"
