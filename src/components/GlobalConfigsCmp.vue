@@ -124,7 +124,7 @@ export default {
       crawlFreqOptions: [
         { value: 6, text: "Every 6 hours" },
         { value: 12, text: "Every 12 hours" },
-        { value: 0, text: "Every 24 hours" },
+        { value: 23, text: "Every 24 hours" },
       ],
     };
   },
