@@ -26,7 +26,7 @@
                 id="input-group-1"
                 label="Update Database Time"
                 label-for="input-1"
-                description="Set the time you would like to update database content."
+                description="Set the time you would like to update the database content."
               >
                 <b-form-select
                   id="input-1"
@@ -122,9 +122,9 @@ export default {
         { value: 4, text: "At 4:00 A.M." },
       ],
       crawlFreqOptions: [
-        { value: 6, text: "Every 6 hours" },
-        { value: 12, text: "Every 12 hours" },
-        { value: 23, text: "Every 24 hours" },
+        { value: "*/6", text: "Every 6 hours" },
+        { value: "*/12", text: "Every 12 hours" },
+        { value: 0, text: "Every 24 hours" },
       ],
     };
   },
