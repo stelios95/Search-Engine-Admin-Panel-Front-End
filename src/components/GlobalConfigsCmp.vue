@@ -105,6 +105,10 @@
 export default {
   data() {
     return {
+      defaults: {
+        updateFreq: "",
+        crawlFreq: "",
+      },
       globalConfig: {
         updateFreq: "",
         crawlFreq: "",
@@ -135,6 +139,8 @@ export default {
       .then((res) => {
         this.globalConfig.updateFreq = res.data.updateContentTime;
         this.globalConfig.crawlFreq = res.data.fullScanInterval;
+        this.defaults.updateFreq = res.data.updateContentTime;
+        this.defaults.crawlFreq = res.data.fullScanInterval;
       })
       .catch((err) => {
         console.log("error" + err);
@@ -184,8 +190,8 @@ export default {
     },
     onReset(evt) {
       evt.preventDefault();
-      this.globalConfig.updateFreq = 12;
-      this.globalConfig.crawlFreq = 24;
+      this.globalConfig.updateFreq = this.defaults.updateFreq;
+      this.globalConfig.crawlFreq = this.defaults.crawlFreq;
       console.log(JSON.stringify(this.globalConfig));
       // Trick to reset/clear native browser form validation state
       this.show = false;
