@@ -106,8 +106,8 @@ export default {
   data() {
     return {
       globalConfig: {
-        updateFreq: 2,
-        crawlFreq: "*/12",
+        updateFreq: "",
+        crawlFreq: "",
       },
       show: true,
       showSpinner: false,
@@ -130,6 +130,15 @@ export default {
   },
   created() {
     this.BASE_URL = "https://crawler-admin-config-be.herokuapp.com";
+    this.axios
+      .get(this.BASE_URL + "/getDefaultIntervals")
+      .then((res) => {
+        this.updateFreq = res.updateContentTime;
+        this.crawlFreq = res.fullScanInterval;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   },
   methods: {
     getValidationState({ dirty, validated, valid = null }) {
