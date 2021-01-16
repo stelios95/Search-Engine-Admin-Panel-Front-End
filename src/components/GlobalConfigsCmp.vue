@@ -131,13 +131,13 @@ export default {
   created() {
     this.BASE_URL = "https://crawler-admin-config-be.herokuapp.com";
     this.axios
-      .get(this.BASE_URL + "/getDefaultIntervals")
+      .get(this.BASE_URL + "/seeds/getDefaultIntervals")
       .then((res) => {
-        this.updateFreq = res.updateContentTime;
-        this.crawlFreq = res.fullScanInterval;
+        this.globalConfig.updateFreq = res.data.updateContentTime;
+        this.globalConfig.crawlFreq = res.data.fullScanInterval;
       })
       .catch((err) => {
-        console.log(err);
+        console.log("error" + err);
       });
   },
   methods: {
