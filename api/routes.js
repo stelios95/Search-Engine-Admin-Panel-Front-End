@@ -62,7 +62,7 @@ seedRoutes.route("/add").post((req, res) => {
   console.log(req.body);
   let seed = new Seed({
     page: req.body.page,
-    isSpa: req.body.isSpa,
+    //isSpa: req.body.isSpa,
     method: req.body.method,
     numberOfChildren: req.body.numberOfChildren
   });
