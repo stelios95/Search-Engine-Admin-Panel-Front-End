@@ -1,6 +1,6 @@
 <template>
   <b-container>
-    <h3>Global Configuration</h3>
+    <h3>General Configuration</h3>
     <hr />
     <p class="lead">
       Here you can customize the overall behavior of the crawler.

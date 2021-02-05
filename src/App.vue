@@ -6,7 +6,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="token">
           <b-link to="/global" router-tag="b-nav-item"
-            >Global Configuration</b-link
+            >General Configuration</b-link
           >
           <b-link to="/add" router-tag="b-nav-item">Add Seed</b-link>
           <b-link to="/remove" router-tag="b-nav-item">Remove Seeds</b-link>
