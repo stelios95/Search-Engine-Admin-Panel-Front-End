@@ -2,10 +2,12 @@
   <b-container>
     <h3>Remove Seeds</h3>
     <hr />
-    <p class="lead">Here you can remove one or more pages from the seed list.</p>
+    <p class="lead">
+      Here you can remove one or more pages from the seed list.
+    </p>
     <b-card
       title="Select URLs to remove from the seed pool."
-      style="max-width: 60rem;"
+      style="max-width: 60rem"
       class="mb-2"
     >
       <div v-if="showSpinner" class="text-center">
@@ -13,7 +15,7 @@
       </div>
       <div v-if="showErrorMessage" class="text-center">
         <p class="text-danger">
-          <b>An error occurred: {{errorMessage}}</b>
+          <b>An error occurred: {{ errorMessage }}</b>
         </p>
       </div>
       <b-table
@@ -28,7 +30,7 @@
         :per-page="perPage"
         :current-page="currentPage"
       ></b-table>
-      <b-row v-if="showControls"  cols="3">
+      <b-row v-if="showControls" cols="3">
         <b-col class="xs-3">
           <b-form-checkbox
             id="checkbox-1"
@@ -37,7 +39,8 @@
             value="allSelected"
             unchecked-value="noneSelected"
             @change="selectRowsHandle"
-          >Select All</b-form-checkbox>
+            >Select All</b-form-checkbox
+          >
         </b-col>
         <b-col class="xs-3">
           <b-pagination
@@ -49,26 +52,27 @@
         </b-col>
         <b-col class="xs-3">
           <b-button
-          v-if="!isMobile"
+            v-if="!isMobile"
             v-on:click="removeSelected"
             variant="success"
             v-bind:disabled="isDisabled"
-          >Remove Selected</b-button>
+            >Remove Selected</b-button
+          >
         </b-col>
       </b-row>
       <b-button
-      v-if="isMobile"
-            v-on:click="removeSelected"
-            variant="success"
-            v-bind:disabled="isDisabled"
-          >Remove Selected</b-button>
+        v-if="isMobile"
+        v-on:click="removeSelected"
+        variant="success"
+        v-bind:disabled="isDisabled"
+        >Remove Selected</b-button
+      >
     </b-card>
   </b-container>
 </template>
 
 <script>
 export default {
- 
   data() {
     return {
       isMobile: false,
@@ -81,28 +85,30 @@ export default {
       isDisabled: true,
       showErrorMessage: false,
       errorMessage: "",
-      showControls: false
+      showControls: false,
     };
   },
-  created(){
-    this.BASE_URL = "https://crawler-admin-config-be.herokuapp.com"
+  created() {
+    this.BASE_URL = "https://crawler-admin-config-be.herokuapp.com";
   },
   mounted() {
-    if( navigator.userAgent.match(/Android/i)
-      || navigator.userAgent.match(/webOS/i)
-      || navigator.userAgent.match(/iPhone/i)
-      || navigator.userAgent.match(/iPad/i)
-      || navigator.userAgent.match(/iPod/i)
-      || navigator.userAgent.match(/BlackBerry/i)
-      || navigator.userAgent.match(/Windows Phone/i)){
-        this.isMobile = true
-      }
+    if (
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPad/i) ||
+      navigator.userAgent.match(/iPod/i) ||
+      navigator.userAgent.match(/BlackBerry/i) ||
+      navigator.userAgent.match(/Windows Phone/i)
+    ) {
+      this.isMobile = true;
+    }
     this.fetchAll();
   },
   computed: {
     rows() {
       return this.items.length;
-    }
+    },
   },
   methods: {
     fetchAll() {
@@ -114,10 +120,10 @@ export default {
       this.axios
         .get(uri, {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(res => {
+        .then((res) => {
           console.log(JSON.stringify(res));
           this.items = res.data;
           if (!this.items.length) {
@@ -131,7 +137,7 @@ export default {
             this.showControls = true;
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err.message);
           this.showSpinner = false;
           this.showErrorMessage = true;
@@ -163,28 +169,28 @@ export default {
       this.showErrorMessage = false;
       let uri = this.BASE_URL + "/seeds/removeSeeds";
       let ids = new Array();
-      this.selected.forEach(el => {
+      this.selected.forEach((el) => {
         ids.push(el._id);
       });
       this.axios
         .post(uri, ids, {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(result => {
+        .then((result) => {
           this.showSpinner = false;
           console.log(result);
           setTimeout(() => {
             location.reload();
           }, 700);
         })
-        .catch(err => {
+        .catch((err) => {
           this.showErrorMessage = true;
           console.log(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 

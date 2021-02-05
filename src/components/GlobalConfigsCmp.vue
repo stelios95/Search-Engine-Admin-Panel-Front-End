@@ -157,12 +157,10 @@ export default {
       this.showSpinner = true;
       this.showMessage = false;
       this.isDisabled = true;
-      this.globalConfig["username"] = sessionStorage.getItem("username");
-      this.globalConfig["password"] = sessionStorage.getItem("password");
       this.axios
         .post(uri, this.globalConfig, {
           headers: {
-            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
         .then((res) => {

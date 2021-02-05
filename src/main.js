@@ -83,12 +83,12 @@ router.beforeEach((to, from, next) => {
     to.fullPath === "/add" ||
     to.fullPath === "/remove"
   ) {
-    if (!sessionStorage.getItem("token")) {
+    if (!localStorage.getItem("token")) {
       next("/login");
     }
   }
   if (to.fullPath === "/login") {
-    if (sessionStorage.getItem("token")) {
+    if (localStorage.getItem("token")) {
       next("/global");
     }
   }

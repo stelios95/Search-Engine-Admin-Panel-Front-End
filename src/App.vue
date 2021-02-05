@@ -5,14 +5,22 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="token">
-          <b-link to="/global" router-tag="b-nav-item">Global Configuration</b-link>
+          <b-link to="/global" router-tag="b-nav-item"
+            >Global Configuration</b-link
+          >
           <b-link to="/add" router-tag="b-nav-item">Add Seed</b-link>
           <b-link to="/remove" router-tag="b-nav-item">Remove Seeds</b-link>
         </b-navbar-nav>
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-form>
-            <b-button v-if="token" size="sm" class="my-2 my-sm-0" @click="logout">Log out</b-button>
+            <b-button
+              v-if="token"
+              size="sm"
+              class="my-2 my-sm-0"
+              @click="logout"
+              >Log out</b-button
+            >
           </b-nav-form>
         </b-navbar-nav>
       </b-collapse>
@@ -25,7 +33,7 @@
 export default {
   data() {
     return {
-      token: sessionStorage.getItem("token")
+      token: localStorage.getItem("token"),
     };
   },
   mounted() {
@@ -40,12 +48,12 @@ export default {
     logout() {
       console.log("button pressed");
       this.setAuthenticated(false);
-      sessionStorage.removeItem("token");
+      localStorage.removeItem("token");
       console.log(this.authenticated);
       this.$router.replace({ name: "login" });
       location.reload();
-    }
-  }
+    },
+  },
 };
 </script>
 
